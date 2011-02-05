@@ -5,7 +5,7 @@ import wci.frontend.Scanner;
 
 public class JavaParserTD extends Parser {
 
-	protected JavaParserTD(Scanner scanner) {
+	public JavaParserTD(Scanner scanner) {
 		super(scanner);
 		// TODO Auto-generated constructor stub
 	}
