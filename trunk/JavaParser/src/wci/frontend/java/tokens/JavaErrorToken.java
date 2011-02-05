@@ -10,8 +10,8 @@ import static wci.frontend.java.JavaTokenType.*;
  *
  * <p>Pascal error token.</p>
  *
- * <p>Copyright (c) 2009 by Ronald Mak</p>
- * <p>For instructional purposes only.  No warranties.</p>
+ * <p>Copyright (c) 2011 by MakPak</p>
+ * <p>HW #2</p>
  */
 public class JavaErrorToken extends JavaToken
 {
