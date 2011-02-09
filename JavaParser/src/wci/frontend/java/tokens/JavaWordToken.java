@@ -6,11 +6,11 @@ import wci.frontend.java.*;
 import static wci.frontend.java.JavaTokenType.*;
 
 /**
- * <h1>PascalWordToken</h1>
+ * <h1>JavaWordToken</h1>
  *
- * <p> Pascal word tokens (identifiers and reserved words).</p>
+ * <p> Java word tokens (identifiers and reserved words).</p>
  *
- * <p>Copyright (c) 2009 by Ronald Mak</p>
+ * <p>Copyright (c) 2011 team MakPak</p>
  * <p>For instructional purposes only.  No warranties.</p>
  */
 public class JavaWordToken extends JavaToken
@@ -47,7 +47,7 @@ public class JavaWordToken extends JavaToken
 
         // Is it a reserved word or an identifier?
         type = (RESERVED_WORDS.contains(text.toLowerCase()))
-               ? PascalTokenType.valueOf(text.toUpperCase())  // reserved word
+               ? JavaTokenType.valueOf(text.toUpperCase())  // reserved word
                : IDENTIFIER;                                  // identifier
     }
 }
