@@ -35,7 +35,7 @@ public enum JavaTokenType implements TokenType
     DOUBLD_SLASH("//"), SLASH_STAR("/*"), STAR_SLASH("*/"), LEFT_SHIFT_EQUAL("<<="),
     RIGHT_SHIFT_EQUALS(">>="), 
 
-    IDENTIFIER, CHARACTER, STRING, INTEGER,
+    IDENTIFIER, CHARACTER, STRING, INTEGER,REAL,
     ERROR, END_OF_FILE;
 
     private static final int FIRST_RESERVED_INDEX = ABSTRACT.ordinal();
