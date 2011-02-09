@@ -26,6 +26,7 @@ public class JavaScanner extends Scanner {
 	protected Token extractToken() throws Exception {
 		  //skipWhiteSpace();
 
+		
 	        Token token;
 	        char currentChar = currentChar();
 
@@ -40,7 +41,7 @@ public class JavaScanner extends Scanner {
 	        else if (Character.isDigit(currentChar)) {
 	            token = new JavaNumberToken(source);
 	        }
-	        else if (currentChar == '\'') {
+	        else if (currentChar == '"') {
 	            token = new JavaStringToken(source);
 	        }
 	        else if (JavaTokenType.SPECIAL_SYMBOLS
@@ -55,6 +56,8 @@ public class JavaScanner extends Scanner {
 
 	        return token;
 
+	        
+	        
 	}
 
 }
