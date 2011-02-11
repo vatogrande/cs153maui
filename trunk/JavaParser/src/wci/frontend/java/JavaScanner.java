@@ -27,9 +27,20 @@ public class JavaScanner extends Scanner {
 	@Override
 	protected Token extractToken() throws Exception {
 		  	
-			skipWhiteSpace();
+		    Token token;
+		    try
+		    {
+		    	skipWhiteSpace();
+		    }
+		    catch (MalformedCommentException mce)
+		    {
+		    	 token = new JavaErrorToken(source, INVALID_CHARACTER,
+                         "EOF");
+
+		    }
+			
 		
-	        Token token;
+	        
 	        char currentChar = currentChar();
 
 	        // Construct the next token.  The current character determines the
@@ -97,7 +108,7 @@ public class JavaScanner extends Scanner {
             		// Found no closing '*/'?
             		if (currentChar == EOF) 
             		{
-            			throw new Exception("Unexpected End Of File.");
+            			throw new MalformedCommentException("Unexpected End Of File.");
             		}	
             	}
             	else if(currentChar == '/')
