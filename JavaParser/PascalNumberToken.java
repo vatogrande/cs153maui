@@ -1,12 +1,10 @@
-package wci.frontend.java.tokens;
+package wci.frontend.pascal.tokens;
 
-import static wci.frontend.java.JavaErrorCode.INVALID_NUMBER;
-import static wci.frontend.java.JavaErrorCode.RANGE_INTEGER;
-import static wci.frontend.java.JavaErrorCode.RANGE_REAL;
-import static wci.frontend.java.JavaTokenType.ERROR;
-import static wci.frontend.java.JavaTokenType.*;
-import wci.frontend.Source;
-import wci.frontend.java.JavaToken;
+import wci.frontend.*;
+import wci.frontend.pascal.*;
+
+import static wci.frontend.pascal.PascalTokenType.*;
+import static wci.frontend.pascal.PascalErrorCode.*;
 
 /**
  * <h1>PascalNumberToken</h1>
@@ -15,10 +13,8 @@ import wci.frontend.java.JavaToken;
  *
  * <p>Copyright (c) 2009 by Ronald Mak</p>
  * <p>For instructional purposes only.  No warranties.</p>
- * modified by Chio Saeteurn
- * 
  */
-public class JavaNumberToken extends JavaToken
+public class PascalNumberToken extends PascalToken
 {
     private static final int MAX_EXPONENT = 37;
 
@@ -27,7 +23,7 @@ public class JavaNumberToken extends JavaToken
      * @param source the source from where to fetch the token's characters.
      * @throws Exception if an error occurred.
      */
-    public JavaNumberToken(Source source)
+    public PascalNumberToken(Source source)
         throws Exception
     {
         super(source);
@@ -53,7 +49,7 @@ public class JavaNumberToken extends JavaToken
     protected void extractNumber(StringBuilder textBuffer)
         throws Exception
     {
-        String wholeDigits = "0";     // digits before the decimal point
+        String wholeDigits = null;     // digits before the decimal point
         String fractionDigits = null;  // digits after the decimal point
         String exponentDigits = null;  // exponent digits
         char exponentSign = '+';       // exponent sign '+' or '-'
@@ -66,49 +62,37 @@ public class JavaNumberToken extends JavaToken
         //Check for zero '0' at beginning
         
         if(currentChar == '0'){
-
         	if (peekChar() == 'x'){
         		type = HEX;
         		String hexDigits = extractHexNumber(textBuffer);
         		if (type == ERROR){
         			return;
         		}
+        		
         		int integerValue = getHexValue(hexDigits);
 
                 if (type != ERROR) {
                     value = new Integer(integerValue);
-                    return;
                 }
+        		
+        		return;
         	}
         	else{
         		type = OCT;
-        		String octDigits = extractOctNumber(textBuffer);
-        		if(type == ERROR){return;}
         		
-        		int intergerValue = getOctValue(octDigits);
-        		 if (type != ERROR  && type != REAL){
-        			 value = new Integer(intergerValue);
-        			 
-        			 return;
-        		 }
+        		
+        		
         	}
-        } 
-
-        // Extract the digits of the whole part of the number.
-       if (Character.isDigit(currentChar)){
-	        wholeDigits = unsignedIntegerDigits(textBuffer);
-	        if (type == ERROR) {
-	            return;
-	        }
-       }
-        
-
-        
         	
+        	
+        }
+        
+        
+
 
         // Is there a . ?
         // It could be a decimal point or the start of a .. token.
-        currentChar = currentChar();
+        
         if (currentChar == '.') {
                 type = REAL;  // decimal point, so token type is REAL
                 textBuffer.append(currentChar);
@@ -116,29 +100,21 @@ public class JavaNumberToken extends JavaToken
 
                 // Collect the digits of the fraction part of the number.
                 fractionDigits = unsignedIntegerDigits(textBuffer);
-                currentChar = currentChar();
-                
-                if(currentChar == '.'){
-                	type = ERROR;
-                	value = INVALID_NUMBER;
-                	textBuffer.append(currentChar);
-                	currentChar = nextChar();
-                	
-                	while(Character.isDigit(currentChar) || currentChar == '.'){
-                		textBuffer.append(currentChar);
-                		currentChar = nextChar();
-                	}
-                	
-                }
                 if (type == ERROR) {
                     return;
                 }
             
+        }else{
+            // Extract the digits of the whole part of the number.
+            wholeDigits = unsignedIntegerDigits(textBuffer);
+            if (type == ERROR) {
+                return;
+            }
         }
-        
-        
+
         // Is there an exponent part?
         // There cannot be an exponent if we already saw a ".." token.
+        currentChar = currentChar();
         if (!sawDotDot && ((currentChar == 'E') || (currentChar == 'e'))) {
             type = REAL;  // exponent, so token type is REAL
             textBuffer.append(currentChar);
@@ -195,6 +171,7 @@ public class JavaNumberToken extends JavaToken
         	currentChar = nextChar();
         	textBuffer.append(currentChar);
         	digits.append(currentChar);
+        	//System.out.println("current digits :" + digits.toString());
             // Extract hex digits.
 
             boolean hexDigit = true;
@@ -293,7 +270,7 @@ public class JavaNumberToken extends JavaToken
 
          // No overflow:  Return the integer value.
          if (integerValue >= prevValue) {
-        	 //System.out.println("hex : " + hexDigits+" hex value :" + integerValue);
+        	 System.out.println("hex : " + hexDigits+" hex value :" + integerValue);
              return integerValue;
          }
 
@@ -307,82 +284,12 @@ public class JavaNumberToken extends JavaToken
 
     }
     
-    /**
-     * Extracts character for a number in oct
-     * @param textBuffer buffer for numbers to be stored
-     * @return retuns the number in string formate
-     * @throws Exception
-     */
+    
     private String extractOctNumber(StringBuilder textBuffer)
     throws Exception{
     	
-    	char currentChar = currentChar();
     	
-        // Must have at least one digit.
-        if (!Character.isDigit(currentChar) || currentChar != '0') {
-            type = ERROR;
-            value = INVALID_NUMBER;
-            return null;
-        }
-        else{
-        	type = OCT;
-            StringBuilder digits = new StringBuilder();
-
-            // Extract oct digits.
-            boolean octDigit = true;
-            while (octDigit) {
-            	if( !Character.isDigit(currentChar)){
-            	    octDigit = false;
-            	}else{
-            		System.out.print(currentChar);
-	                if((octDigit == true) || Character.isDigit(currentChar)){
-	                	if(currentChar == '9' || currentChar == '8'){
-	            	      	type = ERROR;
-	            	    	value = RANGE_INTEGER;
-	            	    	
-	            	    }
-	                	textBuffer.append(currentChar);
-	                	digits.append(currentChar);
-	                	currentChar = nextChar();
-	                }
-            	}
-            }
-            return digits.toString();
-        }
-    }
-    
-    private int getOctValue(String octDigits){
-    	if (octDigits == null){
-    		return 0;
-    	}
-    	     	
-    	int integerValue = 0;
-         int prevValue = -1;    // overflow occurred if prevValue > integerValue
-         int index = 0;
-
-         // Loop over the digits to compute the integer value
-         // as long as there is no overflow.
-         while ((index < octDigits.length()) && (integerValue >= prevValue)) {
-             prevValue = integerValue;
-             integerValue = 8*integerValue +
-                            Character.getNumericValue(octDigits.charAt(index++));
-         }
-
-         // No overflow:  Return the integer value.
-         if (integerValue >= prevValue) {
-        	 //System.out.println("hex : " + hexDigits+" hex value :" + integerValue);
-             return integerValue;
-         }
-
-         // Overflow:  Set the integer out of range error.
-         else {
-        	 //System.out.println("hex had an error");
-             type = ERROR;
-             value = RANGE_INTEGER;
-             return 0;
-         }
-
-    	
+    	return
     }
     
     /**
