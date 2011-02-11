@@ -50,6 +50,7 @@ public enum JavaErrorCode {
     MISSING_RIGHT_PAREN("Missing )"),
     MISSING_SEMICOLON("Missing ;"),
     MISSING_THEN("Missing THEN"),
+    MISSING_CLOSE_COMMENT("Missing */ of multi-line comment."),
     MISSING_TO_DOWNTO("Missing TO or DOWNTO"),
     MISSING_UNTIL("Missing UNTIL"),
     MISSING_VARIABLE("Missing variable"),

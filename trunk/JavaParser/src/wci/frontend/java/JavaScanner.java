@@ -4,6 +4,7 @@ package wci.frontend.java;
 import static wci.frontend.Source.EOF;
 import static wci.frontend.Source.EOL;
 import static wci.frontend.java.JavaErrorCode.INVALID_CHARACTER;
+import static wci.frontend.java.JavaErrorCode.MISSING_CLOSE_COMMENT;
 import wci.frontend.EofToken;
 import wci.frontend.Scanner;
 import wci.frontend.Source;
@@ -34,7 +35,7 @@ public class JavaScanner extends Scanner {
 		    }
 		    catch (MalformedCommentException mce)
 		    {
-		    	 token = new JavaErrorToken(source, INVALID_CHARACTER,
+		    	 token = new JavaErrorToken(source, MISSING_CLOSE_COMMENT,
                          "EOF");
 
 		    }
