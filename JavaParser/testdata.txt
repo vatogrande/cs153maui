@@ -1,0 +1,48 @@
+/* This is a comment. */
+// So is this.
+
+/* Here's a comment
+   that spans several
+   source lines. */
+
+Two/*comments in*//***a row***/ here.
+/* This is /* not a nested comment. */
+// Nor is /* this */ one.
+
+{ Not a comment. }
+
+// Word tokens
+Hello world
+Abstract abstract ABSTRACT aBsTrAcT
+What?
+
+// Character tokens
+'x' 'A' '\'' 'ab' '\n' '\t' '\\'
+
+// String tokens
+"Hello, world."
+"Hello,\tworld!"
+"Hello,\n\"\world!\""
+"It's Friday!"
+""  "\""
+"This string \
+spans \
+several lines."
+"This string
+is broken."
+
+// Special symbol tokens
++ - * / := . , ; : = <> < <= >= > ( ) [ ] { } } ^ ..
+<<=  >>=
+:=<>=<==>>===
+
+// Number tokens
+0 1 12.0 00000000000000000012 .12. 1..2
+012 0128 0x12 0xAb 0x0E12G9
+12. 0.12 .12 1.2e+2 12e+2 12e2 0e2
+12e-2 12e-5 .12e+2 12.e+2 12e-1 12e99
+.31415926 3.1415926
+0.00031415926E4  0.00031415926e+00004  31415.926e-4
+3141592600000000000000000000000e-30
+
+"That's all, folks!

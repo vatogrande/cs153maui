@@ -62,6 +62,7 @@ public enum JavaErrorCode {
     TOO_MANY_LEVELS("Nesting level too deep"),
     TOO_MANY_SUBSCRIPTS("Too many subscripts"),
     UNEXPECTED_EOF("Unexpected end of file"),
+    UNEXPECTED_EOL("Unexpected end of line"),
     UNEXPECTED_TOKEN("Unexpected token"),
     UNIMPLEMENTED("Unimplemented feature"),
     UNRECOGNIZABLE("Unrecognizable input"),

@@ -7,6 +7,7 @@ import wci.frontend.EofToken;
 import wci.frontend.Scanner;
 import wci.frontend.Source;
 import wci.frontend.Token;
+import wci.frontend.java.tokens.JavaCharToken;
 import wci.frontend.java.tokens.JavaWordToken;
 import wci.frontend.java.tokens.JavaNumberToken;
 import wci.frontend.java.tokens.JavaStringToken;
@@ -24,8 +25,8 @@ public class JavaScanner extends Scanner {
 
 	@Override
 	protected Token extractToken() throws Exception {
-		  //skipWhiteSpace();
-
+		  	
+			skipWhiteSpace();
 		
 	        Token token;
 	        char currentChar = currentChar();
@@ -44,6 +45,9 @@ public class JavaScanner extends Scanner {
 	        else if (currentChar == '"') {
 	            token = new JavaStringToken(source);
 	        }
+	        else if (currentChar == '\'') {
+	        	token = new JavaCharToken(source);
+	        }
 	        else if (JavaTokenType.SPECIAL_SYMBOLS
 	                 .containsKey(Character.toString(currentChar))) {
 	            token = new JavaSpecialSymbolToken(source);
@@ -55,9 +59,37 @@ public class JavaScanner extends Scanner {
 	        }
 
 	        return token;
-
-	        
-	        
+       
 	}
+	
+    /**
+     * Skip whitespace characters by consuming them.  A comment is whitespace.
+     * @throws Exception if an error occurred.
+     */
+    private void skipWhiteSpace()
+        throws Exception
+    {
+        char currentChar = currentChar();
+
+        while (Character.isWhitespace(currentChar) || (currentChar == '{')) {
+
+            // Start of a comment?
+            if (currentChar == '{') {
+                do {
+                    currentChar = nextChar();  // consume comment characters
+                } while ((currentChar != '}') && (currentChar != EOF));
+
+                // Found closing '}'?
+                if (currentChar == '}') {
+                    currentChar = nextChar();  // consume the '}'
+                }
+            }
+
+            // Not a comment.
+            else {
+                currentChar = nextChar();  // consume whitespace character
+            }
+        }
+    }
 
 }
