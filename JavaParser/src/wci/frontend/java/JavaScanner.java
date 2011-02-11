@@ -52,8 +52,17 @@ public class JavaScanner extends Scanner {
 	        else if (Character.isLetter(currentChar)) {
 	            token = new JavaWordToken(source);
 	        }
-	        else if (Character.isDigit(currentChar) || currentChar == '.') {
+	        else if (Character.isDigit(currentChar)) {
 	            token = new JavaNumberToken(source);
+	        }
+	        else if (currentChar == '.') {
+	        	// We need to check if the next char is a number
+	        	// If so, send it to NumberToken, if not then send it
+	        	// to SpecialSymbol
+	        	if(Character.isDigit(source.peekChar()))
+	        		token = new JavaNumberToken(source);
+	        	else
+	        		token = new JavaSpecialSymbolToken(source);
 	        }
 	        else if (currentChar == '"') {
 	            token = new JavaStringToken(source);
