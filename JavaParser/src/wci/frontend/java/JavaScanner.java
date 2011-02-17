@@ -100,11 +100,15 @@ public class JavaScanner extends Scanner {
             {
             	currentChar = nextChar(); // consume the *
             
+            	// search for second character of Java's multi-line comment
             	if(currentChar == '*') 
             	{            		 	
             		do 
             		{            			
             			currentChar = nextChar();  // consume comment characters
+            			
+            			// Test if the next two characters are the closing '*/'
+            			// for Java's multi-line comments
             			if(currentChar == '*')
             			{
             				currentChar = nextChar();
