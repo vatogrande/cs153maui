@@ -9,13 +9,12 @@ import wci.frontend.Source;
 import wci.frontend.java.JavaToken;
 
 /**
- * <h1>PascalNumberToken</h1>
+ * <h1>JavaNumberToken</h1>
  *
- * <p>Pascal number tokens (integer and real).</p>
+ * <p>Java number tokens (integer and real).</p>
  *
- * <p>Copyright (c) 2009 by Ronald Mak</p>
- * <p>For instructional purposes only.  No warranties.</p>
- * modified by Chio Saeteurn
+ * <p>Copyright (c) 2011 by Chio Saeteurn.</p>
+ * <p>Sourced based on code by Ronald Mak.</p>
  * 
  */
 public class JavaNumberToken extends JavaToken
@@ -34,7 +33,7 @@ public class JavaNumberToken extends JavaToken
     }
 
     /**
-     * Extract a Pascal number token from the source.
+     * Extract a Java number token from the source.
      * @throws Exception if an error occurred.
      */
     protected void extract()
@@ -46,7 +45,7 @@ public class JavaNumberToken extends JavaToken
     }
 
     /**
-     * Extract a Pascal number token from the source.
+     * Extract a Java number token from the source.
      * @param textBuffer the buffer to append the token's characters.
      * @throws Exception if an error occurred.
      */

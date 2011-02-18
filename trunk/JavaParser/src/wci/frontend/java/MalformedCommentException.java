@@ -2,6 +2,11 @@ package wci.frontend.java;
 
 public class MalformedCommentException extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public MalformedCommentException() {
 		// TODO Auto-generated constructor stub
 	}
