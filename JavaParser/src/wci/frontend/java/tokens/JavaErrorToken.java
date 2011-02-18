@@ -6,9 +6,9 @@ import wci.frontend.java.*;
 import static wci.frontend.java.JavaTokenType.*;
 
 /**
- * <h1>PascalErrorToken</h1>
+ * <h1>JavaErrorToken</h1>
  *
- * <p>Pascal error token.</p>
+ * <p>Java error token.</p>
  *
  * <p>Copyright (c) 2011 by MakPak</p>
  * <p>HW #2</p>

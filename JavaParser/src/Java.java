@@ -10,12 +10,13 @@ import wci.message.*;
 import static wci.message.MessageType.*;
 
 /**
- * <h1>Pascal</h1>
+ * <h1>Java</h1>
  *
- * <p>Compile or interpret a Pascal source program.</p>
+ * <p>Compile or interpret a Java source program.</p>
  *
- * <p>Copyright (c) 2009 by Ronald Mak</p>
+ * <p>Copyright (c) 2011 by MakPak</p>
  * <p>For instructional purposes only.  No warranties.</p>
+ * <p>Based on code written Ron Mak.</p>
  */
 public class Java
 {
