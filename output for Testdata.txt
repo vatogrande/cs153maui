@@ -1,0 +1,216 @@
+001 /* This is a comment. */
+002 // So is this.
+003 
+004 /* Here's a comment
+005    that spans several
+006    source lines. */
+007 
+008 Two/*comments in*//***a row***/ here.
+>>> IDENTIFIER      line=008, pos= 0, text="Two"
+009 /* This is /* not a nested comment. */
+010 // Nor is /* this */ one.
+011 
+012 { Not a comment. }
+>>> LEFT_BRACE      line=012, pos= 0, text="{"
+>>> IDENTIFIER      line=012, pos= 2, text="Not"
+>>> IDENTIFIER      line=012, pos= 6, text="a"
+>>> IDENTIFIER      line=012, pos= 8, text="comment"
+>>> DOT             line=012, pos=15, text="."
+>>> RIGHT_BRACE     line=012, pos=17, text="}"
+013 
+014 // Word tokens
+015 Hello world
+>>> IDENTIFIER      line=015, pos= 0, text="Hello"
+>>> IDENTIFIER      line=015, pos= 6, text="world"
+016 Abstract abstract ABSTRACT aBsTrAcT
+>>> ABSTRACT        line=016, pos= 0, text="Abstract"
+>>> ABSTRACT        line=016, pos= 9, text="abstract"
+>>> ABSTRACT        line=016, pos=18, text="ABSTRACT"
+>>> ABSTRACT        line=016, pos=27, text="aBsTrAcT"
+017 What?
+>>> IDENTIFIER      line=017, pos= 0, text="What"
+>>> QUESTION_MARK   line=017, pos= 4, text="?"
+018 
+019 // Character tokens
+020 'x' 'A' '\'' 'ab' '\n' '\t' '\\'
+>>> CHARACTER       line=020, pos= 0, text="'x'"
+>>>                 value=x
+>>> CHARACTER       line=020, pos= 4, text="'A'"
+>>>                 value=A
+>>> CHARACTER       line=020, pos= 8, text="'\''"
+>>>                 value='
+                 ^
+*** Invalid character [at "'ab'"]
+>>> CHARACTER       line=020, pos=18, text="'\n'"
+>>>                 value=
+
+>>> CHARACTER       line=020, pos=23, text="'\t'"
+>>>                 value=	
+>>> CHARACTER       line=020, pos=28, text="'\\'"
+>>>                 value=\
+021 
+022 // String tokens
+023 "Hello, world."
+>>> STRING          line=023, pos= 0, text=""Hello, world.""
+>>>                 value=Hello, world.
+024 "Hello,\tworld!"
+>>> STRING          line=024, pos= 0, text=""Hello,\tworld!""
+>>>                 value=Hello,\tworld!
+025 "Hello,\n\"\world!\""
+>>> STRING          line=025, pos= 0, text=""Hello,\n\"\world!\"""
+>>>                 value=Hello,\n\"\world!\"
+026 "It's Friday!"
+>>> STRING          line=026, pos= 0, text=""It's Friday!""
+>>>                 value=It's Friday!
+027 ""  "\""
+>>> STRING          line=027, pos= 0, text=""""
+>>>                 value=
+>>> STRING          line=027, pos= 4, text=""\"""
+>>>                 value=\"
+028 "This string \
+029 spans \
+030 several lines."
+>>> STRING          line=028, pos= 0, text=""This string spans several lines.""
+>>>                 value=This string spans several lines.
+031 "This string
+    ^
+*** Unexpected end of line [at ""This string"]
+032 is broken."
+>>> IDENTIFIER      line=032, pos= 0, text="is"
+>>> IDENTIFIER      line=032, pos= 3, text="broken"
+>>> DOT             line=032, pos= 9, text="."
+              ^
+*** Unexpected end of line [at """]
+033 
+034 // Special symbol tokens
+035 + - * / := . , ; : = <> < <= >= > ( ) [ ] { } } ^ ..
+>>> PLUS            line=035, pos= 0, text="+"
+>>> MINUS           line=035, pos= 2, text="-"
+>>> STAR            line=035, pos= 4, text="*"
+>>> COLON           line=035, pos= 8, text=":"
+>>> EQUALS          line=035, pos= 9, text="="
+>>> DOT             line=035, pos=11, text="."
+>>> COMMA           line=035, pos=13, text=","
+>>> SEMICOLON       line=035, pos=15, text=";"
+>>> COLON           line=035, pos=17, text=":"
+>>> EQUALS          line=035, pos=19, text="="
+>>> LESS_THAN       line=035, pos=21, text="<"
+>>> GREATER_THAN    line=035, pos=22, text=">"
+>>> LESS_THAN       line=035, pos=24, text="<"
+>>> LESS_EQUALS     line=035, pos=26, text="<="
+>>> GREATER_EQUALS  line=035, pos=29, text=">="
+>>> GREATER_THAN    line=035, pos=32, text=">"
+>>> LEFT_PAREN      line=035, pos=34, text="("
+>>> RIGHT_PAREN     line=035, pos=36, text=")"
+>>> LEFT_BRACKET    line=035, pos=38, text="["
+>>> RIGHT_BRACKET   line=035, pos=40, text="]"
+>>> LEFT_BRACE      line=035, pos=42, text="{"
+>>> RIGHT_BRACE     line=035, pos=44, text="}"
+>>> RIGHT_BRACE     line=035, pos=46, text="}"
+>>> CARROT          line=035, pos=48, text="^"
+>>> DOT             line=035, pos=50, text="."
+>>> DOT             line=035, pos=51, text="."
+036 <<=  >>=
+>>> LEFT_SHIFT_EQUAL line=036, pos= 0, text="<<="
+>>> RIGHT_SHIFT_EQUALS line=036, pos= 5, text=">>="
+037 :=<>=<==>>===
+>>> COLON           line=037, pos= 0, text=":"
+>>> EQUALS          line=037, pos= 1, text="="
+>>> LESS_THAN       line=037, pos= 2, text="<"
+>>> GREATER_EQUALS  line=037, pos= 3, text=">="
+>>> LESS_EQUALS     line=037, pos= 5, text="<="
+>>> EQUALS          line=037, pos= 7, text="="
+>>> RIGHT_SHIFT_EQUALS line=037, pos= 8, text=">>="
+>>> EQUAL_EQUAL     line=037, pos=11, text="=="
+038 
+039 // Number tokens
+040 0 1 12.0 00000000000000000012 .12. 1..2
+0>>> OCT             line=040, pos= 0, text="0"
+>>>                 value=0
+>>> INTEGER         line=040, pos= 2, text="1"
+>>>                 value=1
+>>> REAL            line=040, pos= 4, text="12.0"
+>>>                 value=12.0
+00000000000000000012>>> OCT             line=040, pos= 9, text="00000000000000000012"
+>>>                 value=10
+                                  ^
+*** Invalid number [at ".12."]
+                                       ^
+*** Invalid number [at "1..2"]
+041 012 0128 0x12 0xAb 0x0E12G9
+012>>> OCT             line=041, pos= 0, text="012"
+>>>                 value=10
+0128        ^
+*** Integer literal out of range [at "0128"]
+>>> HEX             line=041, pos= 9, text="0x12"
+>>>                 value=18
+>>> HEX             line=041, pos=14, text="0xAb"
+>>>                 value=171
+>>> HEX             line=041, pos=19, text="0x0E12"
+>>>                 value=3602
+>>> IDENTIFIER      line=041, pos=25, text="G9"
+042 12. 0.12 .12 1.2e+2 12e+2 12e2 0e2
+    ^
+*** Invalid number [at "12."]
+0>>> OCT             line=042, pos= 4, text="0"
+>>>                 value=0
+>>> REAL            line=042, pos= 5, text=".12"
+>>>                 value=0.12
+>>> REAL            line=042, pos= 9, text=".12"
+>>>                 value=0.12
+>>> REAL            line=042, pos=13, text="1.2e+2"
+>>>                 value=120.0
+>>> REAL            line=042, pos=20, text="12e+2"
+>>>                 value=1200.0
+>>> REAL            line=042, pos=26, text="12e2"
+>>>                 value=1200.0
+0>>> OCT             line=042, pos=31, text="0"
+>>>                 value=0
+>>> IDENTIFIER      line=042, pos=32, text="e2"
+043 12e-2 12e-5 .12e+2 12.e+2 12e-1 12e99
+>>> REAL            line=043, pos= 0, text="12e-2"
+>>>                 value=0.12
+>>> REAL            line=043, pos= 6, text="12e-5"
+>>>                 value=1.2E-4
+>>> REAL            line=043, pos=12, text=".12e+2"
+>>>                 value=12.0
+                       ^
+*** Invalid number [at "12."]
+>>> IDENTIFIER      line=043, pos=22, text="e"
+>>> PLUS            line=043, pos=23, text="+"
+>>> INTEGER         line=043, pos=24, text="2"
+>>>                 value=2
+>>> REAL            line=043, pos=26, text="12e-1"
+>>>                 value=1.2
+                                    ^
+*** Real literal out of range [at "12e99"]
+044 .31415926 3.1415926
+>>> REAL            line=044, pos= 0, text=".31415926"
+>>>                 value=0.31415927
+>>> REAL            line=044, pos=10, text="3.1415926"
+>>>                 value=3.1415925
+045 0.00031415926E4  0.00031415926e+00004  31415.926e-4
+0>>> OCT             line=045, pos= 0, text="0"
+>>>                 value=0
+>>> REAL            line=045, pos= 1, text=".00031415926E4"
+>>>                 value=3.1415925
+0>>> OCT             line=045, pos=17, text="0"
+>>>                 value=0
+>>> REAL            line=045, pos=18, text=".00031415926e+00004"
+>>>                 value=3.1415925
+>>> REAL            line=045, pos=39, text="31415.926e-4"
+>>>                 value=3.1415925
+046 3141592600000000000000000000000e-30
+>>> REAL            line=046, pos= 0, text="3141592600000000000000000000000e-30"
+>>>                 value=3.1415925
+047 
+048 "That's all, folks!
+    ^
+*** Unexpected end of line [at ""That's all, folks!"]
+
+                  48 source lines.
+                  10 syntax errors.
+                0.05 seconds total parsing time.
+
+                   0 instructions generated.
+                0.00 seconds total code generation time.

@@ -1,0 +1,10 @@
+"Hello, world."
+"Hello,\tworld!"
+"Hello,\n\"\world!\""
+"It's Friday!"
+""  "\""
+"This string \
+spans \
+several lines."
+"This string
+is broken."
